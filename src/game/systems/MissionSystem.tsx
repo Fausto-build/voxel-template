@@ -72,7 +72,7 @@ function WaypointTracker() {
   return null;
 }
 
-export function MissionSystem() {
+function MissionVisuals() {
   const world = useGameStore((state) => state.world);
   const missions = useGameStore((state) => state.missions);
   const missionStates = useGameStore((state) => state.missionStates);
@@ -81,53 +81,67 @@ export function MissionSystem() {
 
   return (
     <>
-      <ReachLocationTracker />
-      <WaypointTracker />
-
-      {missions.map((mission) => {
+      {missions.flatMap((mission) => {
         const state = missionStates[mission.id];
+        const elements: React.ReactNode[] = [];
 
-        // Waypoints — show the current active waypoint ring
+        // Waypoints — show rings for active + upcoming waypoints
         if (mission.waypoints?.length && state === "active") {
           const waypointIdx = waypointProgress[mission.id] ?? 0;
-          const remaining = mission.waypoints.slice(waypointIdx);
-          return remaining.map((wp, i) => (
-            <WaypointRing
-              key={`${mission.id}_wp_${waypointIdx + i}`}
-              position={wp.position}
-              active={i === 0}
-              label={wp.label}
-            />
-          ));
+          mission.waypoints.forEach((wp, i) => {
+            if (i >= waypointIdx) {
+              elements.push(
+                <WaypointRing
+                  key={`${mission.id}_wp_${i}`}
+                  position={wp.position}
+                  active={i === waypointIdx}
+                  label={wp.label}
+                />,
+              );
+            }
+          });
+          return elements;
         }
 
         // reach_location marker — show target position when active
         if (mission.type === "reach_location" && mission.target.locationPosition && state === "active") {
-          return (
+          elements.push(
             <MissionMarker
-              key={mission.id}
+              key={`${mission.id}_reach`}
               position={mission.target.locationPosition}
               visible
-            />
+            />,
           );
+          return elements;
         }
 
         // collect / talk_to_npc return marker — show on ready_to_complete
         const returnNpcId = mission.completion?.returnToNpcId;
         const npc = returnNpcId ? world.npcs.find((entry) => entry.id === returnNpcId) : null;
 
-        if (!npc) return null;
+        if (npc && state === "ready_to_complete") {
+          const livePosition = npcRuntime[npc.id]?.position ?? npc.position;
+          elements.push(
+            <MissionMarker
+              key={`${mission.id}_return`}
+              position={livePosition}
+              visible
+            />,
+          );
+        }
 
-        const livePosition = npcRuntime[npc.id]?.position ?? npc.position;
-
-        return (
-          <MissionMarker
-            key={mission.id}
-            position={livePosition}
-            visible={state === "ready_to_complete"}
-          />
-        );
+        return elements;
       })}
+    </>
+  );
+}
+
+export function MissionSystem() {
+  return (
+    <>
+      <ReachLocationTracker />
+      <WaypointTracker />
+      <MissionVisuals />
     </>
   );
 }
