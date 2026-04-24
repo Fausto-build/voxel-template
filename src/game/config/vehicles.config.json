@@ -1,0 +1,18 @@
+{
+  "car": {
+    "label": "Car",
+    "primitive": "low_poly_car",
+    "defaultSpeed": 12,
+    "defaultTurnSpeed": 2,
+    "canDrive": true,
+    "editableFields": ["position", "rotation", "scale", "color", "speed", "turnSpeed"]
+  },
+  "kart": {
+    "label": "Kart",
+    "primitive": "low_poly_kart",
+    "defaultSpeed": 15,
+    "defaultTurnSpeed": 2.5,
+    "canDrive": true,
+    "editableFields": ["position", "rotation", "scale", "color", "speed", "turnSpeed"]
+  }
+}

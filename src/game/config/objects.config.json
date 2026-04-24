@@ -1,0 +1,62 @@
+{
+  "tree": {
+    "label": "Tree",
+    "category": "nature",
+    "primitive": "low_poly_tree",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "rock": {
+    "label": "Rock",
+    "category": "nature",
+    "primitive": "low_poly_rock",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "castle": {
+    "label": "Castle",
+    "category": "building",
+    "primitive": "low_poly_castle",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "bridge": {
+    "label": "Bridge",
+    "category": "structure",
+    "primitive": "low_poly_bridge",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "house": {
+    "label": "House",
+    "category": "building",
+    "primitive": "low_poly_house",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "fence": {
+    "label": "Fence",
+    "category": "structure",
+    "primitive": "low_poly_fence",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "sign": {
+    "label": "Sign",
+    "category": "prop",
+    "primitive": "low_poly_sign",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "chest": {
+    "label": "Chest",
+    "category": "prop",
+    "primitive": "low_poly_chest",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "tower": {
+    "label": "Tower",
+    "category": "building",
+    "primitive": "low_poly_tower",
+    "editableFields": ["position", "rotation", "scale", "color"]
+  },
+  "gem": {
+    "label": "Gem",
+    "category": "collectible",
+    "primitive": "low_poly_gem",
+    "editableFields": ["position", "scale", "color", "value"]
+  }
+}

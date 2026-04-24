@@ -1,0 +1,14 @@
+{
+  "wizard": {
+    "label": "Wizard",
+    "primitive": "low_poly_wizard",
+    "defaultDialogue": ["Hello, adventurer!"],
+    "editableFields": ["name", "position", "rotation", "dialogue", "missionId", "color"]
+  },
+  "villager": {
+    "label": "Villager",
+    "primitive": "low_poly_villager",
+    "defaultDialogue": ["Nice to meet you!"],
+    "editableFields": ["name", "position", "rotation", "dialogue", "missionId", "color"]
+  }
+}

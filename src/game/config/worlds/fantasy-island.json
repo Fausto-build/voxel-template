@@ -1,0 +1,161 @@
+{
+  "id": "fantasy-island",
+  "name": "Fantasy Island Adventure",
+  "theme": "fantasy",
+  "spawnPoint": {
+    "position": [0, 1.5, 8],
+    "rotation": [0, 0, 0]
+  },
+  "terrain": {
+    "type": "island",
+    "size": [84, 84],
+    "height": 1,
+    "groundColor": "#72D76B",
+    "sandColor": "#F4D58D",
+    "waterColor": "#43B8E8"
+  },
+  "objects": [
+    {
+      "id": "castle_01",
+      "type": "castle",
+      "position": [18, 0, -15],
+      "rotation": [0, -0.5, 0],
+      "scale": [1.35, 1.35, 1.35],
+      "color": "#C9C6D3"
+    },
+    {
+      "id": "bridge_01",
+      "type": "bridge",
+      "position": [-1, 0.15, -10],
+      "rotation": [0, 0.15, 0],
+      "scale": [1.1, 1, 1.35],
+      "color": "#A36B3F"
+    },
+    {
+      "id": "tree_01",
+      "type": "tree",
+      "position": [-12, 0, 10],
+      "rotation": [0, 0.2, 0],
+      "scale": [1.1, 1.1, 1.1]
+    },
+    {
+      "id": "tree_02",
+      "type": "tree",
+      "position": [-19, 0, -5],
+      "rotation": [0, 0.4, 0],
+      "scale": [1, 1.2, 1]
+    },
+    {
+      "id": "tree_03",
+      "type": "tree",
+      "position": [5, 0, -22],
+      "rotation": [0, -0.2, 0],
+      "scale": [0.9, 1, 0.9]
+    },
+    {
+      "id": "tree_04",
+      "type": "tree",
+      "position": [21, 0, 8],
+      "rotation": [0, 0.2, 0],
+      "scale": [1.05, 1.15, 1.05]
+    },
+    {
+      "id": "rock_01",
+      "type": "rock",
+      "position": [-7, 0, -14],
+      "rotation": [0, 0.4, 0],
+      "scale": [1.4, 0.9, 1.1],
+      "color": "#8D93A5"
+    },
+    {
+      "id": "rock_02",
+      "type": "rock",
+      "position": [14, 0, 16],
+      "rotation": [0, -0.7, 0],
+      "scale": [1.1, 0.75, 0.9],
+      "color": "#79838E"
+    },
+    {
+      "id": "sign_01",
+      "type": "sign",
+      "position": [2.5, 0, 5],
+      "rotation": [0, -0.4, 0],
+      "scale": [1, 1, 1],
+      "color": "#B67A3D"
+    },
+    {
+      "id": "chest_01",
+      "type": "chest",
+      "position": [12, 0, -2],
+      "rotation": [0, 0.8, 0],
+      "scale": [1, 1, 1],
+      "color": "#8B4F2E"
+    }
+  ],
+  "collectibles": [
+    {
+      "id": "gem_01",
+      "type": "gem",
+      "position": [4, 1.2, 4],
+      "value": 1,
+      "missionId": "collect_gems"
+    },
+    {
+      "id": "gem_02",
+      "type": "gem",
+      "position": [-9, 1.2, 12],
+      "value": 1,
+      "missionId": "collect_gems"
+    },
+    {
+      "id": "gem_03",
+      "type": "gem",
+      "position": [11, 1.2, 5],
+      "value": 1,
+      "missionId": "collect_gems"
+    },
+    {
+      "id": "gem_04",
+      "type": "gem",
+      "position": [23, 1.2, -9],
+      "value": 1,
+      "missionId": "collect_gems"
+    },
+    {
+      "id": "gem_05",
+      "type": "gem",
+      "position": [-19, 1.2, -12],
+      "value": 1,
+      "missionId": "collect_gems"
+    }
+  ],
+  "npcs": [
+    {
+      "id": "wizard_01",
+      "name": "Wizard Milo",
+      "type": "wizard",
+      "position": [21, 0, -11],
+      "rotation": [0, -0.6, 0],
+      "dialogue": [
+        "Welcome to Fantasy Island!",
+        "Please collect 5 magic gems and bring them back to me.",
+        "The island will sparkle again when the gems return."
+      ],
+      "missionId": "collect_gems"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "car_01",
+      "type": "car",
+      "label": "Red Island Car",
+      "position": [6, 0.25, 14],
+      "rotation": [0, 0.25, 0],
+      "scale": [1, 1, 1],
+      "color": "#FF4D4D",
+      "speed": 12,
+      "turnSpeed": 2,
+      "canDrive": true
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "themes": {
+    "fantasy": {
+      "id": "fantasy",
+      "skyColor": "#8FD7FF",
+      "groundColor": "#72D76B",
+      "sandColor": "#F4D58D",
+      "waterColor": "#43B8E8",
+      "fogColor": "#D8F5FF",
+      "lighting": {
+        "ambientIntensity": 0.72,
+        "sunIntensity": 1.25
+      },
+      "style": {
+        "visualStyle": "low-poly-cartoon",
+        "outline": false,
+        "shadows": true
+      }
+    },
+    "snow": {
+      "id": "snow",
+      "skyColor": "#DCEEFF",
+      "groundColor": "#FFFFFF",
+      "sandColor": "#D9F2FF",
+      "waterColor": "#9DD9F3",
+      "fogColor": "#EEF8FF",
+      "lighting": {
+        "ambientIntensity": 0.8,
+        "sunIntensity": 1
+      },
+      "style": {
+        "visualStyle": "low-poly-cartoon",
+        "outline": false,
+        "shadows": true
+      }
+    },
+    "desert": {
+      "id": "desert",
+      "skyColor": "#FFDFA3",
+      "groundColor": "#E6B566",
+      "sandColor": "#F7D98B",
+      "waterColor": "#4DB7E5",
+      "fogColor": "#FFE6B8",
+      "lighting": {
+        "ambientIntensity": 0.75,
+        "sunIntensity": 1.4
+      },
+      "style": {
+        "visualStyle": "low-poly-cartoon",
+        "outline": false,
+        "shadows": true
+      }
+    }
+  }
+}

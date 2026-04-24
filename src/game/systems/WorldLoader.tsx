@@ -1,0 +1,43 @@
+import { CollectibleSystem } from "./CollectibleSystem";
+import { InteractionSystem } from "./InteractionSystem";
+import { MissionSystem } from "./MissionSystem";
+import { NPCSystem } from "./NPCSystem";
+import { ObjectFactory } from "./ObjectFactory";
+import { VehicleSystem } from "./VehicleSystem";
+import { Sky } from "../components/Sky";
+import { Terrain } from "../components/Terrain";
+import { Water } from "../components/Water";
+import type { WorldConfig } from "../types/world.types";
+import { getTheme } from "../utils/configLoader";
+
+type WorldLoaderProps = {
+  world: WorldConfig;
+};
+
+export function WorldLoader({ world }: WorldLoaderProps) {
+  const theme = getTheme(world.theme);
+
+  return (
+    <>
+      <Sky color={theme.skyColor} />
+      <fog attach="fog" args={[theme.fogColor, 42, 135]} />
+      <ambientLight intensity={theme.lighting.ambientIntensity} />
+      <directionalLight
+        castShadow={theme.style.shadows}
+        position={[35, 42, 28]}
+        intensity={theme.lighting.sunIntensity}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+      />
+      <hemisphereLight args={[theme.skyColor, theme.groundColor, 0.42]} />
+      <Terrain terrain={world.terrain} themeId={world.theme} />
+      <Water color={world.terrain.waterColor ?? theme.waterColor} />
+      <ObjectFactory objects={world.objects} />
+      <CollectibleSystem collectibles={world.collectibles} />
+      <NPCSystem npcs={world.npcs} />
+      <VehicleSystem vehicles={world.vehicles} />
+      <MissionSystem />
+      <InteractionSystem />
+    </>
+  );
+}

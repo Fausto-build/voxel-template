@@ -1,0 +1,92 @@
+import { useFrame } from "@react-three/fiber";
+import { DEFAULT_INTERACTION_RADIUS } from "../core/constants";
+import { useGameStore } from "../core/gameStore";
+import type { NearbyInteractable } from "../types/game.types";
+import { gameConfig } from "../utils/configLoader";
+import { distance2D } from "../utils/math";
+
+function isSameInteractable(a: NearbyInteractable | null, b: NearbyInteractable | null) {
+  return a?.kind === b?.kind && a?.id === b?.id && a?.prompt === b?.prompt;
+}
+
+export function InteractionSystem() {
+  useFrame(() => {
+    const state = useGameStore.getState();
+    const radius = gameConfig.player.interactionRadius ?? DEFAULT_INTERACTION_RADIUS;
+
+    if (state.playerMode === "driving" && state.currentVehicleId) {
+      const interactable: NearbyInteractable = {
+        kind: "exit_vehicle",
+        id: state.currentVehicleId,
+        label: "Car",
+        prompt: "Press E to exit car",
+        distance: 0,
+      };
+
+      if (!isSameInteractable(state.nearbyInteractable, interactable)) {
+        state.setNearbyInteractable(interactable);
+      }
+      return;
+    }
+
+    let nearest: NearbyInteractable | null = null;
+
+    for (const npc of state.world.npcs) {
+      const distance = distance2D(state.playerPosition, npc.position);
+
+      if (distance > radius) {
+        continue;
+      }
+
+      const missionState = npc.missionId ? state.missionStates[npc.missionId] : null;
+      const prompt =
+        missionState === "ready_to_complete"
+          ? `Press E to finish with ${npc.name}`
+          : `Press E to talk to ${npc.name}`;
+
+      const candidate: NearbyInteractable = {
+        kind: "npc",
+        id: npc.id,
+        label: npc.name,
+        prompt,
+        distance,
+      };
+
+      if (!nearest || candidate.distance < nearest.distance) {
+        nearest = candidate;
+      }
+    }
+
+    for (const vehicle of state.world.vehicles) {
+      if (!vehicle.canDrive) {
+        continue;
+      }
+
+      const runtime = state.vehicleRuntime[vehicle.id];
+      const vehiclePosition = runtime?.position ?? vehicle.position;
+      const distance = distance2D(state.playerPosition, vehiclePosition);
+
+      if (distance > radius) {
+        continue;
+      }
+
+      const candidate: NearbyInteractable = {
+        kind: "vehicle",
+        id: vehicle.id,
+        label: vehicle.label ?? vehicle.type,
+        prompt: "Press E to drive",
+        distance,
+      };
+
+      if (!nearest || candidate.distance < nearest.distance) {
+        nearest = candidate;
+      }
+    }
+
+    if (!isSameInteractable(state.nearbyInteractable, nearest)) {
+      state.setNearbyInteractable(nearest);
+    }
+  });
+
+  return null;
+}

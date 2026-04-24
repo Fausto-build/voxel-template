@@ -1,0 +1,17 @@
+{
+  "title": "Rabbit 3D Adventure Template",
+  "defaultWorldId": "fantasy-island",
+  "player": {
+    "walkSpeed": 6,
+    "runSpeed": 10,
+    "jumpVelocity": 9,
+    "interactionRadius": 4
+  },
+  "camera": {
+    "distance": 10,
+    "height": 5,
+    "smoothing": 0.12,
+    "minPitch": -0.4,
+    "maxPitch": 0.75
+  }
+}

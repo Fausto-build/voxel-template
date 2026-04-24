@@ -1,0 +1,19 @@
+[
+  {
+    "id": "collect_gems",
+    "title": "Find the Magic Gems",
+    "description": "Collect 5 magic gems and return to Wizard Milo.",
+    "type": "collect",
+    "target": {
+      "collectibleType": "gem",
+      "count": 5
+    },
+    "completion": {
+      "returnToNpcId": "wizard_01"
+    },
+    "reward": {
+      "points": 100,
+      "message": "You saved the island!"
+    }
+  }
+]
