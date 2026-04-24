@@ -1,7 +1,10 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { MathUtils, type Group } from "three";
+import { MathUtils, BackSide, MeshBasicMaterial, type Group } from "three";
 import type { CharacterState } from "../types/game.types";
+import { useOutline } from "../render/OutlineContext";
+
+const outlineMat = new MeshBasicMaterial({ color: "#111111", side: BackSide });
 
 type PlayerProps = {
   visible: boolean;
@@ -64,6 +67,7 @@ function animateLimb(
 }
 
 export function Player({ visible, yaw, state }: PlayerProps) {
+  const outline = useOutline();
   const bodyRef = useRef<Group>(null);
   const headRef = useRef<Group>(null);
   const leftArmRef = useRef<Group>(null);
@@ -237,6 +241,11 @@ export function Player({ visible, yaw, state }: PlayerProps) {
           <cylinderGeometry args={[0.3, 0.36, 0.74, 8]} />
           <meshStandardMaterial color={SHIRT} flatShading />
         </mesh>
+        {outline && (
+          <mesh position={[0, 0.72, 0]} scale={[1.08, 1.06, 1.08]} material={outlineMat}>
+            <cylinderGeometry args={[0.3, 0.36, 0.74, 8]} />
+          </mesh>
+        )}
         <mesh castShadow position={[0, 0.33, -0.01]}>
           <boxGeometry args={[0.68, 0.08, 0.4]} />
           <meshStandardMaterial color={BELT} flatShading />

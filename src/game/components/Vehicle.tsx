@@ -2,6 +2,7 @@ import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import type { RapierRigidBody } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
+import { BackSide, MeshBasicMaterial } from "three";
 import { InputManager } from "../core/InputManager";
 import { PLAYER_RADIUS } from "../core/constants";
 import { useGameStore } from "../core/gameStore";
@@ -9,6 +10,9 @@ import type { VehicleConfig } from "../types/world.types";
 import { gameConfig } from "../utils/configLoader";
 import { clamp, clampToIsland, resolveObjectCollisions } from "../utils/math";
 import { approach, springDamp } from "../utils/spring";
+import { useOutline } from "../render/OutlineContext";
+
+const vehicleOutlineMat = new MeshBasicMaterial({ color: "#111111", side: BackSide });
 
 type VehicleProps = {
   vehicle: VehicleConfig;
@@ -35,6 +39,7 @@ export function Vehicle({ vehicle }: VehicleProps) {
   );
   const world = useGameStore((state) => state.world);
   const color = vehicle.color ?? "#FF4D4D";
+  const outline = useOutline();
   const islandRadius = useMemo(() => world.terrain.size[0] / 2 - 5, [world.terrain.size]);
 
   useFrame((_, rawDelta) => {
@@ -155,6 +160,7 @@ export function Vehicle({ vehicle }: VehicleProps) {
           steering={runtime.steering}
           wheelSpin={runtime.wheelSpin}
           wheelVisuals={vehicle.wheelVisuals ?? true}
+          outline={outline}
         />
         <CuboidCollider args={[1.15, 0.52, 1.75]} position={[0, 0.55, 0]} />
       </group>
@@ -167,11 +173,13 @@ function CarPrimitive({
   steering,
   wheelSpin,
   wheelVisuals,
+  outline,
 }: {
   color: string;
   steering: number;
   wheelSpin: number;
   wheelVisuals: boolean;
+  outline: boolean;
 }) {
   const steeringAngle = steering * -0.55;
   const tireSpin = wheelVisuals ? wheelSpin : 0;
@@ -186,6 +194,11 @@ function CarPrimitive({
         <boxGeometry args={[2.18, 0.72, 3.12]} />
         <meshStandardMaterial color={color} roughness={0.52} metalness={0.06} flatShading />
       </mesh>
+      {outline && (
+        <mesh position={[0, 0.72, -0.05]} scale={[1.06, 1.07, 1.05]} material={vehicleOutlineMat}>
+          <boxGeometry args={[2.18, 0.72, 3.12]} />
+        </mesh>
+      )}
       <mesh castShadow position={[0, 0.97, -1.08]}>
         <boxGeometry args={[1.82, 0.18, 0.86]} />
         <meshStandardMaterial color={color} roughness={0.46} metalness={0.08} flatShading />

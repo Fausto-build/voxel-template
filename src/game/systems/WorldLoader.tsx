@@ -12,6 +12,7 @@ import { Water } from "../components/Water";
 import { PropScatter } from "../components/PropScatter";
 import type { WorldConfig } from "../types/world.types";
 import { getTheme } from "../utils/configLoader";
+import { OutlineContext } from "../render/OutlineContext";
 
 type WorldLoaderProps = {
   world: WorldConfig;
@@ -35,7 +36,7 @@ export function WorldLoader({ world }: WorldLoaderProps) {
   const sunPosition = theme.sunPosition ?? [35, 42, 28];
 
   return (
-    <>
+    <OutlineContext.Provider value={theme.style.outline}>
       <ToneMappingExposure exposure={theme.toneMappingExposure ?? 1.1} />
       <Sky color={theme.skyColor} themeId={world.theme} />
       <fog attach="fog" args={[theme.fogColor, fogNear, fogFar]} />
@@ -64,6 +65,6 @@ export function WorldLoader({ world }: WorldLoaderProps) {
       <VehicleSystem vehicles={world.vehicles} />
       <MissionSystem />
       <InteractionSystem />
-    </>
+    </OutlineContext.Provider>
   );
 }
