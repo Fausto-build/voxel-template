@@ -1,8 +1,14 @@
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import objectsConfig from "../config/objects.config.json";
 import type { WorldObjectConfig } from "../types/world.types";
 
 type ObjectRendererProps = {
   object: WorldObjectConfig;
+};
+
+type ObjectDef = {
+  collider: { type: string; args: number[]; offset: number[] } | null;
+  instanced?: boolean;
 };
 
 const DEFAULT_TREE_GREEN = "#34A853";
@@ -12,6 +18,7 @@ const DEFAULT_STONE = "#A8A9B4";
 export function ObjectRenderer({ object }: ObjectRendererProps) {
   const rotation = object.rotation ?? [0, 0, 0];
   const scale = object.scale ?? [1, 1, 1];
+  const def = (objectsConfig as Record<string, ObjectDef>)[object.type];
 
   return (
     <RigidBody
@@ -22,28 +29,14 @@ export function ObjectRenderer({ object }: ObjectRendererProps) {
       scale={scale}
     >
       <Primitive object={object} />
-      <ObjectCollider type={object.type} />
+      {def?.collider && (
+        <CuboidCollider
+          args={def.collider.args as [number, number, number]}
+          position={def.collider.offset as [number, number, number]}
+        />
+      )}
     </RigidBody>
   );
-}
-
-function ObjectCollider({ type }: { type: string }) {
-  switch (type) {
-    case "castle":
-      return <CuboidCollider args={[3.8, 1.8, 3.6]} position={[0, 1.8, 0]} />;
-    case "house":
-      return <CuboidCollider args={[1.6, 1.2, 1.5]} position={[0, 1.2, 0]} />;
-    case "tower":
-      return <CuboidCollider args={[1.1, 1.9, 1.1]} position={[0, 1.9, 0]} />;
-    case "tree":
-      return <CuboidCollider args={[0.55, 1.4, 0.55]} position={[0, 1.4, 0]} />;
-    case "rock":
-      return <CuboidCollider args={[0.9, 0.55, 0.85]} position={[0, 0.55, 0]} />;
-    case "chest":
-      return <CuboidCollider args={[0.8, 0.45, 0.55]} position={[0, 0.45, 0]} />;
-    default:
-      return null;
-  }
 }
 
 function Primitive({ object }: ObjectRendererProps) {

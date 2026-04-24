@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { BackSide, MathUtils, MeshBasicMaterial, type Group } from "three";
 import type { NPCConfig } from "../types/world.types";
 import { useGameStore } from "../core/gameStore";
+import { EntityRegistry } from "../core/EntityRegistry";
 import { gameConfig } from "../utils/configLoader";
 import { distance2D, normalizeAngle } from "../utils/math";
 import { springDampAngle } from "../utils/spring";
@@ -129,6 +130,10 @@ export function NPC({ npc }: NPCProps) {
       w: Math.cos(rotationY / 2),
     });
 
+    // Always keep EntityRegistry current so MissionSystem/InteractionSystem can read live position
+    EntityRegistry.set(npc.id, position, rotationY);
+
+    // Only write to Zustand when NPC is actively moving — avoids React re-renders every frame
     if (target) {
       state.updateNPCRuntime(npc.id, {
         position,

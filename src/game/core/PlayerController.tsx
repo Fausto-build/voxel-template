@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { InputManager } from "./InputManager";
 import { GRAVITY, PLAYER_HEIGHT, PLAYER_RADIUS } from "./constants";
 import { useGameStore } from "./gameStore";
+import { EntityRegistry } from "./EntityRegistry";
 import { Player } from "../components/Player";
 import type { CharacterState } from "../types/game.types";
 import { gameConfig } from "../utils/configLoader";
@@ -16,6 +17,8 @@ export function PlayerController() {
   const horizontalVelocity = useRef({ x: 0, z: 0 });
   const verticalVelocity = useRef(0);
   const grounded = useRef(false);
+  const lastWrittenPosition = useRef<Vector3Tuple>([0, 0, 0]);
+  const lastWrittenYaw = useRef(0);
   const visible = useGameStore((state) => state.playerMode === "walking");
   const playerYaw = useGameStore((state) => state.playerYaw);
   const playerState = useGameStore((state) => state.playerState);
@@ -124,7 +127,24 @@ export function PlayerController() {
     }
 
     bodyRef.current?.setNextKinematicTranslation({ x: next[0], y: next[1], z: next[2] });
-    state.setPlayerPosition(next);
+
+    // Write live position to EntityRegistry every frame (zero Zustand overhead)
+    EntityRegistry.set("player", next, state.playerYaw);
+
+    // Write to Zustand only when position changes by more than a small threshold,
+    // preventing a React re-render on every single frame tick.
+    const lp = lastWrittenPosition.current;
+    const dx = next[0] - lp[0];
+    const dz = next[2] - lp[2];
+    const dy = next[1] - lp[1];
+    if (dx * dx + dy * dy + dz * dz > 0.0001) {
+      state.setPlayerPosition(next);
+      lastWrittenPosition.current = next;
+    }
+    if (Math.abs(state.playerYaw - lastWrittenYaw.current) > 0.01) {
+      state.setPlayerYaw(state.playerYaw);
+      lastWrittenYaw.current = state.playerYaw;
+    }
   });
 
   return (

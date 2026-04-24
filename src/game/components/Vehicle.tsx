@@ -6,6 +6,7 @@ import { BackSide, MeshBasicMaterial } from "three";
 import { InputManager } from "../core/InputManager";
 import { PLAYER_RADIUS } from "../core/constants";
 import { useGameStore } from "../core/gameStore";
+import { EntityRegistry } from "../core/EntityRegistry";
 import type { VehicleConfig } from "../types/world.types";
 import { gameConfig } from "../utils/configLoader";
 import { clamp, clampToIsland, resolveObjectCollisions } from "../utils/math";
@@ -57,6 +58,7 @@ export function Vehicle({ vehicle }: VehicleProps) {
         z: 0,
         w: Math.cos(currentRuntime.rotationY / 2),
       });
+      EntityRegistry.set(vehicle.id, currentRuntime.position, currentRuntime.rotationY);
     }
 
     if (!isDriving) {

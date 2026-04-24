@@ -3,60 +3,80 @@
     "label": "Árbol",
     "category": "nature",
     "primitive": "low_poly_tree",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": { "type": "cuboid", "args": [0.55, 1.4, 0.55], "offset": [0, 1.4, 0] },
+    "instanced": true
   },
   "rock": {
     "label": "Roca",
     "category": "nature",
     "primitive": "low_poly_rock",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": { "type": "cuboid", "args": [0.9, 0.55, 0.85], "offset": [0, 0.55, 0] },
+    "instanced": true
   },
   "castle": {
     "label": "Castillo",
     "category": "building",
     "primitive": "low_poly_castle",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": { "type": "cuboid", "args": [3.8, 1.8, 3.6], "offset": [0, 1.8, 0] },
+    "instanced": false
   },
   "bridge": {
     "label": "Puente",
     "category": "structure",
     "primitive": "low_poly_bridge",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": null,
+    "instanced": false
   },
   "house": {
     "label": "Casa",
     "category": "building",
     "primitive": "low_poly_house",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": { "type": "cuboid", "args": [1.6, 1.2, 1.5], "offset": [0, 1.2, 0] },
+    "instanced": false
   },
   "fence": {
     "label": "Cerca",
     "category": "structure",
     "primitive": "low_poly_fence",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": null,
+    "instanced": true
   },
   "sign": {
     "label": "Cartel",
     "category": "prop",
     "primitive": "low_poly_sign",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": null,
+    "instanced": true
   },
   "chest": {
     "label": "Cofre",
     "category": "prop",
     "primitive": "low_poly_chest",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": { "type": "cuboid", "args": [0.8, 0.45, 0.55], "offset": [0, 0.45, 0] },
+    "instanced": false
   },
   "tower": {
     "label": "Torre",
     "category": "building",
     "primitive": "low_poly_tower",
-    "editableFields": ["position", "rotation", "scale", "color"]
+    "editableFields": ["position", "rotation", "scale", "color"],
+    "collider": { "type": "cuboid", "args": [1.1, 1.9, 1.1], "offset": [0, 1.9, 0] },
+    "instanced": false
   },
   "gem": {
     "label": "Gema",
     "category": "collectible",
     "primitive": "low_poly_gem",
-    "editableFields": ["position", "scale", "color", "value"]
+    "editableFields": ["position", "scale", "color", "value"],
+    "collider": null,
+    "instanced": true
   }
 }

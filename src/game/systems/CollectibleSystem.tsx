@@ -2,6 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { Collectible } from "../components/Collectible";
 import { COLLECTIBLE_RADIUS } from "../core/constants";
 import { useGameStore } from "../core/gameStore";
+import { EntityRegistry } from "../core/EntityRegistry";
 import type { CollectibleConfig } from "../types/world.types";
 import { distance2D } from "../utils/math";
 
@@ -17,10 +18,10 @@ export function CollectibleSystem({ collectibles }: CollectibleSystemProps) {
       return;
     }
 
-    const activeVehicle = state.currentVehicleId
-      ? state.vehicleRuntime[state.currentVehicleId]
-      : null;
-    const collectorPosition = activeVehicle?.position ?? state.playerPosition;
+    const collectorPosition =
+      (state.currentVehicleId ? EntityRegistry.getPosition(state.currentVehicleId) : null) ??
+      EntityRegistry.getPosition("player") ??
+      state.playerPosition;
 
     for (const collectible of collectibles) {
       if (state.collectedIds.includes(collectible.id)) {

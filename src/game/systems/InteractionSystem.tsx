@@ -1,6 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { DEFAULT_INTERACTION_RADIUS } from "../core/constants";
 import { useGameStore } from "../core/gameStore";
+import { EntityRegistry } from "../core/EntityRegistry";
 import type { NearbyInteractable } from "../types/game.types";
 import { gameConfig } from "../utils/configLoader";
 import { distance2D } from "../utils/math";
@@ -30,12 +31,13 @@ export function InteractionSystem() {
       return;
     }
 
+    // Use EntityRegistry for live positions — avoids subscribing to Zustand position state
+    const playerPos = EntityRegistry.getPosition("player") ?? state.playerPosition;
     let nearest: NearbyInteractable | null = null;
 
     for (const npc of state.world.npcs) {
-      const runtime = state.npcRuntime[npc.id];
-      const npcPosition = runtime?.position ?? npc.position;
-      const distance = distance2D(state.playerPosition, npcPosition);
+      const npcPosition = EntityRegistry.getPosition(npc.id) ?? state.npcRuntime[npc.id]?.position ?? npc.position;
+      const distance = distance2D(playerPos, npcPosition);
 
       if (distance > radius) {
         continue;
@@ -65,9 +67,8 @@ export function InteractionSystem() {
         continue;
       }
 
-      const runtime = state.vehicleRuntime[vehicle.id];
-      const vehiclePosition = runtime?.position ?? vehicle.position;
-      const distance = distance2D(state.playerPosition, vehiclePosition);
+      const vehiclePosition = EntityRegistry.getPosition(vehicle.id) ?? state.vehicleRuntime[vehicle.id]?.position ?? vehicle.position;
+      const distance = distance2D(playerPos, vehiclePosition);
 
       if (distance > radius) {
         continue;
