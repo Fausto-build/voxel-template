@@ -1,7 +1,7 @@
 {
   "id": "city-island",
   "name": "Isla Ciudad Inicial",
-  "theme": "fantasy",
+  "theme": "city",
   "spawnPoint": {
     "position": [0, 1.5, 0],
     "rotation": [0, 0, 0]
@@ -19,6 +19,49 @@
       "rotation": [0, 0.4, 0],
       "scale": [1.2, 1.2, 1.2],
       "color": "#FFE0A6"
+    },
+    {
+      "id": "house_02",
+      "type": "house",
+      "position": [-9, 0, -7],
+      "rotation": [0, -0.3, 0],
+      "scale": [1.1, 1.1, 1.1],
+      "color": "#D0E8FF"
+    },
+    {
+      "id": "tower_01",
+      "type": "tower",
+      "position": [0, 0, -14],
+      "rotation": [0, 0, 0],
+      "scale": [1.3, 1.5, 1.3],
+      "color": "#BBBBCC"
+    },
+    {
+      "id": "sign_01",
+      "type": "sign",
+      "position": [3, 0, 3],
+      "rotation": [0, -0.6, 0],
+      "scale": [1, 1, 1],
+      "color": "#C09060"
+    },
+    {
+      "id": "fence_01",
+      "type": "fence",
+      "position": [-5, 0, 2],
+      "rotation": [0, 0.1, 0],
+      "scale": [0.9, 0.9, 0.9],
+      "color": "#888899"
+    }
+  ],
+  "props": [
+    {
+      "kind": "rock",
+      "count": 6,
+      "area": 60,
+      "color": "#909090",
+      "minScale": 0.5,
+      "maxScale": 0.9,
+      "jitter": 1.8
     }
   ],
   "collectibles": [],

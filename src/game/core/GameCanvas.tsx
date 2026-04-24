@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import type * as THREE from "three";
+import { ACESFilmicToneMapping, SRGBColorSpace } from "three";
 import { CameraController } from "./CameraController";
 import { GameLoop } from "./GameLoop";
 import { InputManager } from "./InputManager";
@@ -49,6 +50,9 @@ export function GameCanvas() {
       dpr={[1, 1.75]}
       gl={{ antialias: true, powerPreference: "high-performance" }}
       onCreated={({ gl }) => {
+        gl.toneMapping = ACESFilmicToneMapping;
+        gl.toneMappingExposure = 1.1;
+        gl.outputColorSpace = SRGBColorSpace;
         gl.domElement.addEventListener("click", () => InputManager.requestPointerLock(gl.domElement));
       }}
     >

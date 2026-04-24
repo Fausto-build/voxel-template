@@ -7,9 +7,34 @@
       "sandColor": "#F4D58D",
       "waterColor": "#43B8E8",
       "fogColor": "#D8F5FF",
+      "fogNear": 42,
+      "fogFar": 135,
+      "toneMappingExposure": 1.1,
+      "sunPosition": [35, 42, 28],
       "lighting": {
         "ambientIntensity": 0.72,
         "sunIntensity": 1.25
+      },
+      "style": {
+        "visualStyle": "low-poly-cartoon",
+        "outline": false,
+        "shadows": true
+      }
+    },
+    "city": {
+      "id": "city",
+      "skyColor": "#B8C8D8",
+      "groundColor": "#3A3A3A",
+      "sandColor": "#888888",
+      "waterColor": "#4A8FAA",
+      "fogColor": "#C0CED8",
+      "fogNear": 30,
+      "fogFar": 100,
+      "toneMappingExposure": 0.95,
+      "sunPosition": [20, 35, 60],
+      "lighting": {
+        "ambientIntensity": 0.6,
+        "sunIntensity": 0.95
       },
       "style": {
         "visualStyle": "low-poly-cartoon",
@@ -24,9 +49,13 @@
       "sandColor": "#D9F2FF",
       "waterColor": "#9DD9F3",
       "fogColor": "#EEF8FF",
+      "fogNear": 35,
+      "fogFar": 110,
+      "toneMappingExposure": 1.15,
+      "sunPosition": [30, 38, 45],
       "lighting": {
         "ambientIntensity": 0.8,
-        "sunIntensity": 1
+        "sunIntensity": 1.0
       },
       "style": {
         "visualStyle": "low-poly-cartoon",
@@ -41,9 +70,34 @@
       "sandColor": "#F7D98B",
       "waterColor": "#4DB7E5",
       "fogColor": "#FFE6B8",
+      "fogNear": 50,
+      "fogFar": 150,
+      "toneMappingExposure": 1.2,
+      "sunPosition": [55, 38, 20],
       "lighting": {
         "ambientIntensity": 0.75,
         "sunIntensity": 1.4
+      },
+      "style": {
+        "visualStyle": "low-poly-cartoon",
+        "outline": false,
+        "shadows": true
+      }
+    },
+    "sandbox": {
+      "id": "sandbox",
+      "skyColor": "#B0D4F0",
+      "groundColor": "#9DB87D",
+      "sandColor": "#D6C997",
+      "waterColor": "#43B8E8",
+      "fogColor": "#D4EAF7",
+      "fogNear": 42,
+      "fogFar": 135,
+      "toneMappingExposure": 1.05,
+      "sunPosition": [35, 42, 28],
+      "lighting": {
+        "ambientIntensity": 0.7,
+        "sunIntensity": 1.1
       },
       "style": {
         "visualStyle": "low-poly-cartoon",

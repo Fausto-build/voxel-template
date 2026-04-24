@@ -1,7 +1,7 @@
 {
   "id": "empty-sandbox",
   "name": "Zona vacía",
-  "theme": "fantasy",
+  "theme": "sandbox",
   "spawnPoint": {
     "position": [0, 1.5, 0],
     "rotation": [0, 0, 0]

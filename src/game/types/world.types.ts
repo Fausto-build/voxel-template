@@ -80,6 +80,16 @@ export type WorldPathConfig = {
   loop?: boolean;
 };
 
+export type PropScatterEntry = {
+  kind: string;
+  count: number;
+  area: number;
+  color?: string;
+  jitter?: number;
+  minScale?: number;
+  maxScale?: number;
+};
+
 export type WorldConfig = {
   id: string;
   name: string;
@@ -91,6 +101,7 @@ export type WorldConfig = {
   npcs: NPCConfig[];
   vehicles: VehicleConfig[];
   paths?: WorldPathConfig[];
+  props?: PropScatterEntry[];
 };
 
 export type ThemeConfig = {
@@ -100,6 +111,10 @@ export type ThemeConfig = {
   sandColor: string;
   waterColor: string;
   fogColor: string;
+  fogNear?: number;
+  fogFar?: number;
+  toneMappingExposure?: number;
+  sunPosition?: [number, number, number];
   lighting: {
     ambientIntensity: number;
     sunIntensity: number;

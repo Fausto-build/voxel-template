@@ -159,6 +159,25 @@
       "moveSpeed": 1.35
     }
   ],
+  "props": [
+    {
+      "kind": "tree",
+      "count": 14,
+      "area": 72,
+      "minScale": 0.8,
+      "maxScale": 1.3,
+      "jitter": 1.5
+    },
+    {
+      "kind": "rock",
+      "count": 8,
+      "area": 68,
+      "color": "#8D93A5",
+      "minScale": 0.6,
+      "maxScale": 1.1,
+      "jitter": 2.0
+    }
+  ],
   "vehicles": [
     {
       "id": "car_01",

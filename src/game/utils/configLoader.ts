@@ -21,7 +21,7 @@ export const missionsConfig = missionsConfigJson as MissionConfig[];
 export const objectDefinitions = objectDefinitionsJson as Record<string, ObjectDefinition>;
 export const npcDefinitions = npcDefinitionsJson as Record<string, NPCDefinition>;
 export const vehicleDefinitions = vehicleDefinitionsJson as Record<string, VehicleDefinition>;
-export const themeRegistry = themeConfigJson as ThemeRegistry;
+export const themeRegistry = themeConfigJson as unknown as ThemeRegistry;
 
 function asWorldConfig(value: unknown): WorldConfig {
   return value as WorldConfig;
