@@ -1,6 +1,7 @@
 import { MeshStandardMaterial, Color } from "three";
+import type { ThemeConfig } from "../types/world.types";
 
-type PaletteId =
+export type PaletteId =
   | "grass"
   | "sand"
   | "rock"
@@ -13,7 +14,7 @@ type PaletteId =
   | "skin"
   | "dark";
 
-type ThemePalette = Record<PaletteId, MeshStandardMaterial>;
+export type ThemePalette = Record<PaletteId, MeshStandardMaterial>;
 
 const cache = new Map<string, ThemePalette>();
 
@@ -54,6 +55,11 @@ export function getPalette(
   }
 
   return cache.get(key)!;
+}
+
+/** Derive palette directly from a ThemeConfig — any new theme is automatic. */
+export function getPaletteForTheme(theme: ThemeConfig): ThemePalette {
+  return getPalette(theme.id, theme.groundColor, theme.sandColor, theme.waterColor);
 }
 
 export function disposePalette(key: string) {

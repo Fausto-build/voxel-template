@@ -6,6 +6,12 @@ export type MissionState =
   | "ready_to_complete"
   | "completed";
 
+export type MissionWaypoint = {
+  position: [number, number, number];
+  radius: number;
+  label?: string;
+};
+
 export type MissionConfig = {
   id: string;
   title: string;
@@ -14,12 +20,15 @@ export type MissionConfig = {
   target: MissionTarget;
   completion?: MissionCompletion;
   reward?: MissionReward;
+  waypoints?: MissionWaypoint[];
 };
 
 export type MissionTarget = {
   collectibleType?: string;
   count?: number;
   locationId?: string;
+  locationPosition?: [number, number, number];
+  locationRadius?: number;
   npcId?: string;
 };
 

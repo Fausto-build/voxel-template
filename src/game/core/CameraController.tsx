@@ -81,8 +81,14 @@ export function CameraController() {
 
     // ── Third-person follow ──────────────────────────────────────────────────
     const target = activeVehicle?.position ?? state.playerPosition;
-    const distance = state.cameraDistance;
-    const height = gameConfig.camera.height + state.cameraPitch * 3;
+    const baseDistance = activeVehicle
+      ? (gameConfig.camera.maxDistance ?? 7)
+      : state.cameraDistance;
+    const distance = activeVehicle ? baseDistance : state.cameraDistance;
+    const baseHeight = activeVehicle
+      ? (gameConfig.camera.vehicleFirstPersonHeight ?? 4)
+      : gameConfig.camera.height;
+    const height = baseHeight + state.cameraPitch * 3;
     const yaw = state.cameraYaw;
 
     cameraTarget.set(target[0], target[1], target[2]);
@@ -93,9 +99,8 @@ export function CameraController() {
       target[2] + Math.cos(yaw) * distance,
     );
 
-    // ── Soft collision: pull camera toward target if blocked ─────────────────
-    // Only cast against opaque, non-character scene objects
-    rayOrigin.copy(cameraTarget).y += 1.2;
+    // ── Soft collision: pull camera in only if blocked, max 30% closer ────────
+    rayOrigin.set(target[0], target[1] + 1.2, target[2]);
     rayDir.subVectors(desiredPosition, rayOrigin).normalize();
     raycaster.set(rayOrigin, rayDir);
     raycaster.far = desiredPosition.distanceTo(rayOrigin);
@@ -105,7 +110,8 @@ export function CameraController() {
     );
 
     if (hits.length > 0) {
-      const safeDistance = clamp(hits[0].distance - 0.35, 1.5, raycaster.far);
+      const minAllowed = raycaster.far * 0.7; // never closer than 70% of desired
+      const safeDistance = clamp(hits[0].distance - 0.3, minAllowed, raycaster.far);
       desiredPosition.copy(rayOrigin).addScaledVector(rayDir, safeDistance);
     }
 

@@ -20,6 +20,8 @@
     "maxDistance": 16,
     "zoomStep": 0.01,
     "freeCameraSpeed": 18,
+    "vehicleThirdPersonDistance": 7,
+    "vehicleThirdPersonHeight": 4,
     "vehicleFirstPersonHeight": 1.45,
     "vehicleFirstPersonForwardOffset": 1.15,
     "vehicleFirstPersonSmoothing": 0.26

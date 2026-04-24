@@ -97,6 +97,7 @@ function buildInitialState(world: WorldConfig, missions: MissionConfig[]) {
     activeMissionId: null,
     missionProgress: Object.fromEntries(missions.map((mission) => [mission.id, 0])),
     missionStates: createMissionStates(missions),
+    waypointProgress: Object.fromEntries(missions.map((mission) => [mission.id, 0])),
     nearbyInteractable: null,
     dialogue: null,
     completedMissions: [],
@@ -146,6 +147,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updateMissions: (missions) => {
     const currentStates = get().missionStates;
     const currentProgress = get().missionProgress;
+    const currentWaypoints = get().waypointProgress;
 
     set({
       missions: cloneMissionConfig(missions),
@@ -154,6 +156,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ),
       missionProgress: Object.fromEntries(
         missions.map((mission) => [mission.id, currentProgress[mission.id] ?? 0]),
+      ),
+      waypointProgress: Object.fromEntries(
+        missions.map((mission) => [mission.id, currentWaypoints[mission.id] ?? 0]),
       ),
     });
   },
@@ -274,17 +279,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
-    const progress = countCollectedForMission(state.world, state.collectedIds, mission);
-    const targetCount = mission.target.count ?? 1;
-    const missionStates: Record<string, MissionState> = {
-      ...state.missionStates,
-      [missionId]: getCollectMissionState(progress, targetCount),
-    };
+    let missionState: MissionState = "active";
+    let progress = 0;
+
+    if (mission.type === "collect") {
+      progress = countCollectedForMission(state.world, state.collectedIds, mission);
+      const targetCount = mission.target.count ?? 1;
+      missionState = getCollectMissionState(progress, targetCount);
+    }
 
     set({
       activeMissionId: missionId,
       missionProgress: { ...state.missionProgress, [missionId]: progress },
-      missionStates,
+      missionStates: { ...state.missionStates, [missionId]: missionState },
     });
   },
 
@@ -396,9 +403,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     if (missionState === "active") {
-      const progress = state.missionProgress[mission.id] ?? 0;
-      const target = mission.target.count ?? 1;
-      get().openDialogue(npc, [`Encontraste ${progress} de ${target} gemas. ¡Sigue buscando!`]);
+      if (mission.type === "talk_to_npc" && mission.target.npcId === npc.id) {
+        set({
+          missionStates: { ...state.missionStates, [mission.id]: "ready_to_complete" },
+        });
+        if (mission.completion?.returnToNpcId && mission.completion.returnToNpcId !== npc.id) {
+          get().openDialogue(npc, ["Ve a hablar con el siguiente personaje para completar la misión."]);
+        } else {
+          get().completeMission(mission.id);
+          get().openDialogue(npc, [mission.reward?.message ?? "¡Misión completa!"]);
+        }
+        return;
+      }
+
+      if (mission.type === "collect") {
+        const progress = state.missionProgress[mission.id] ?? 0;
+        const target = mission.target.count ?? 1;
+        get().openDialogue(npc, [`Encontraste ${progress} de ${target} gemas. ¡Sigue buscando!`]);
+        return;
+      }
+
+      get().openDialogue(npc);
       return;
     }
 
@@ -487,6 +512,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
         [npcId]: { ...runtime, ...patch },
       },
     });
+  },
+
+  advanceWaypoint: (missionId) => {
+    const state = get();
+    const mission = getMissionById(state.missions, missionId);
+
+    if (!mission?.waypoints?.length) {
+      return;
+    }
+
+    const current = state.waypointProgress[missionId] ?? 0;
+    const next = current + 1;
+
+    if (next >= mission.waypoints.length) {
+      set({ waypointProgress: { ...state.waypointProgress, [missionId]: next } });
+    } else {
+      set({ waypointProgress: { ...state.waypointProgress, [missionId]: next } });
+    }
   },
 
   clearCompletionMessage: () => set({ completionMessage: null }),

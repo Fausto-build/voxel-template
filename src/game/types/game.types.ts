@@ -117,6 +117,7 @@ export type GameStoreState = {
   activeMissionId: string | null;
   missionProgress: Record<string, number>;
   missionStates: Record<string, MissionState>;
+  waypointProgress: Record<string, number>;
   nearbyInteractable: NearbyInteractable | null;
   dialogue: DialogueState | null;
   completedMissions: string[];
@@ -142,6 +143,7 @@ export type GameStoreActions = {
   collectCollectible: (collectible: CollectibleConfig) => void;
   startMission: (missionId: string) => void;
   completeMission: (missionId: string) => void;
+  advanceWaypoint: (missionId: string) => void;
   openDialogue: (npc: NPCConfig, lines?: string[]) => void;
   advanceDialogue: () => void;
   closeDialogue: () => void;

@@ -24,14 +24,28 @@ export function UIManager() {
   const missionState = mission ? missionStates[mission.id] : null;
   const targetCount = mission?.target.count ?? 0;
   const progress = mission ? missionProgress[mission.id] ?? 0 : 0;
-  const missionHint =
-    missionState === "completed"
-      ? "¡Misión completa!"
-      : missionState === "ready_to_complete"
-        ? "Vuelve con el Mago Milo y presiona E para entregarle las gemas."
-        : activeMissionId
-          ? mission?.description
-          : "Habla con el Mago Milo.";
+
+  const missionHint = useMemo(() => {
+    if (!mission) return "Explora el mundo.";
+    if (missionState === "completed") return "¡Misión completa!";
+    if (missionState === "ready_to_complete") {
+      if (mission.completion?.returnToNpcId) {
+        return "Vuelve con el personaje indicado y presiona E para completar la misión.";
+      }
+      return "¡Ya puedes completar la misión!";
+    }
+    if (missionState === "active") {
+      if (mission.type === "reach_location") return mission.description;
+      if (mission.type === "talk_to_npc") return mission.description;
+      return mission.description;
+    }
+    if (!activeMissionId) {
+      return missions.some((m) => m.type === "collect")
+        ? "Habla con el Mago Milo."
+        : "Explora el mundo.";
+    }
+    return mission.description;
+  }, [mission, missionState, activeMissionId, missions]);
 
   return (
     <div className="game-ui">
@@ -39,7 +53,7 @@ export function UIManager() {
         <div className="mission-panel__world">{worldName}</div>
         <h1>{mission?.title ?? "Exploración libre"}</h1>
         <p>{missionHint}</p>
-        {mission ? (
+        {mission?.type === "collect" ? (
           <div className="gem-meter" aria-label={`Gemas ${progress} de ${targetCount}`}>
             <span>Gemas</span>
             <strong>

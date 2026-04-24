@@ -15,5 +15,37 @@
       "points": 100,
       "message": "¡Salvaste la isla!"
     }
+  },
+  {
+    "id": "reach_castle",
+    "title": "Visita el castillo",
+    "description": "Llega al castillo en el extremo norte de la isla.",
+    "type": "reach_location",
+    "target": {
+      "locationId": "castle_area",
+      "locationPosition": [18, 0, -15],
+      "locationRadius": 8
+    },
+    "reward": {
+      "points": 50,
+      "message": "¡Llegaste al castillo!"
+    },
+    "waypoints": [
+      { "position": [10, 0, -5], "radius": 4, "label": "Hacia el castillo" },
+      { "position": [18, 0, -15], "radius": 8, "label": "Castillo" }
+    ]
+  },
+  {
+    "id": "talk_to_wizard",
+    "title": "Habla con el Mago",
+    "description": "Encuentra al Mago Milo en su jardín y habla con él.",
+    "type": "talk_to_npc",
+    "target": {
+      "npcId": "wizard_01"
+    },
+    "reward": {
+      "points": 30,
+      "message": "¡El Mago Milo te ha saludado!"
+    }
   }
 ]
