@@ -6,6 +6,7 @@ import type {
   VehicleConfig,
   WorldConfig,
   WorldObjectConfig,
+  WorldPathConfig,
 } from "../types/world.types";
 import { themeRegistry, worldRegistry } from "../utils/configLoader";
 import { hasDuplicateIds } from "../utils/ids";
@@ -55,6 +56,7 @@ function ensureUniqueId(world: WorldConfig, id: string): ValidationResult {
     ...world.collectibles.map((entry) => ({ id: entry.id })),
     ...world.npcs.map((entry) => ({ id: entry.id })),
     ...world.vehicles.map((entry) => ({ id: entry.id })),
+    ...(world.paths ?? []).map((entry) => ({ id: entry.id })),
   ];
 
   return hasDuplicateIds([...ids, { id }]) ? fail(`ID "${id}" already exists in this world.`) : ok();
@@ -206,6 +208,46 @@ export function updateVehicle(
   if (!validation.valid) return result(active.value, validation);
 
   return applyWorld({ ...active.value, vehicles: nextVehicles });
+}
+
+export function addPath(worldId: string, path: WorldPathConfig): EditResult<WorldConfig> {
+  const active = activeWorldFor(worldId);
+  if (!active.ok) return active;
+
+  const unique = ensureUniqueId(active.value, path.id);
+  if (!unique.valid) return result(active.value, unique);
+
+  return applyWorld({ ...active.value, paths: [...(active.value.paths ?? []), path] });
+}
+
+export function removePath(worldId: string, pathId: string): EditResult<WorldConfig> {
+  const active = activeWorldFor(worldId);
+  if (!active.ok) return active;
+
+  return applyWorld({
+    ...active.value,
+    paths: (active.value.paths ?? []).filter((path) => path.id !== pathId),
+  });
+}
+
+export function updatePath(
+  worldId: string,
+  pathId: string,
+  patch: Partial<WorldPathConfig>,
+): EditResult<WorldConfig> {
+  const active = activeWorldFor(worldId);
+  if (!active.ok) return active;
+
+  const paths = active.value.paths ?? [];
+  const nextPaths = paths.map((path) =>
+    path.id === pathId ? { ...path, ...patch, id: path.id } : path,
+  );
+
+  if (!paths.some((path) => path.id === pathId)) {
+    return { ok: false, errors: [`Path "${pathId}" was not found.`] };
+  }
+
+  return applyWorld({ ...active.value, paths: nextPaths });
 }
 
 export function createMission(mission: MissionConfig): EditResult<MissionConfig[]> {

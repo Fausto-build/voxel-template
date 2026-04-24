@@ -11,6 +11,8 @@ type KeyCode =
   | "ShiftLeft"
   | "ShiftRight"
   | "KeyE"
+  | "KeyV"
+  | "KeyC"
   | "Escape";
 
 type MouseDelta = {
@@ -22,6 +24,7 @@ class InputManagerImpl {
   private keys = new Set<string>();
   private pressed = new Set<string>();
   private mouseDelta: MouseDelta = { x: 0, y: 0 };
+  private wheelDelta = 0;
   private connected = false;
 
   connect(target: Document = document) {
@@ -32,6 +35,7 @@ class InputManagerImpl {
     target.addEventListener("keydown", this.handleKeyDown);
     target.addEventListener("keyup", this.handleKeyUp);
     target.addEventListener("mousemove", this.handleMouseMove);
+    target.addEventListener("wheel", this.handleWheel, { passive: false });
     target.addEventListener("visibilitychange", this.clear);
     this.connected = true;
   }
@@ -44,6 +48,7 @@ class InputManagerImpl {
     target.removeEventListener("keydown", this.handleKeyDown);
     target.removeEventListener("keyup", this.handleKeyUp);
     target.removeEventListener("mousemove", this.handleMouseMove);
+    target.removeEventListener("wheel", this.handleWheel);
     target.removeEventListener("visibilitychange", this.clear);
     this.clear();
     this.connected = false;
@@ -68,6 +73,12 @@ class InputManagerImpl {
   consumeMouseDelta(): MouseDelta {
     const delta = this.mouseDelta;
     this.mouseDelta = { x: 0, y: 0 };
+    return delta;
+  }
+
+  consumeWheelDelta(): number {
+    const delta = this.wheelDelta;
+    this.wheelDelta = 0;
     return delta;
   }
 
@@ -117,10 +128,20 @@ class InputManagerImpl {
     this.mouseDelta.y += event.movementY;
   };
 
+  private handleWheel = (event: WheelEvent) => {
+    if (!document.pointerLockElement) {
+      return;
+    }
+
+    event.preventDefault();
+    this.wheelDelta += event.deltaY;
+  };
+
   private clear = () => {
     this.keys.clear();
     this.pressed.clear();
     this.mouseDelta = { x: 0, y: 0 };
+    this.wheelDelta = 0;
   };
 }
 

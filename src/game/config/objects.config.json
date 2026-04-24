@@ -1,60 +1,60 @@
 {
   "tree": {
-    "label": "Tree",
+    "label": "Árbol",
     "category": "nature",
     "primitive": "low_poly_tree",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "rock": {
-    "label": "Rock",
+    "label": "Roca",
     "category": "nature",
     "primitive": "low_poly_rock",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "castle": {
-    "label": "Castle",
+    "label": "Castillo",
     "category": "building",
     "primitive": "low_poly_castle",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "bridge": {
-    "label": "Bridge",
+    "label": "Puente",
     "category": "structure",
     "primitive": "low_poly_bridge",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "house": {
-    "label": "House",
+    "label": "Casa",
     "category": "building",
     "primitive": "low_poly_house",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "fence": {
-    "label": "Fence",
+    "label": "Cerca",
     "category": "structure",
     "primitive": "low_poly_fence",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "sign": {
-    "label": "Sign",
+    "label": "Cartel",
     "category": "prop",
     "primitive": "low_poly_sign",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "chest": {
-    "label": "Chest",
+    "label": "Cofre",
     "category": "prop",
     "primitive": "low_poly_chest",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "tower": {
-    "label": "Tower",
+    "label": "Torre",
     "category": "building",
     "primitive": "low_poly_tower",
     "editableFields": ["position", "rotation", "scale", "color"]
   },
   "gem": {
-    "label": "Gem",
+    "label": "Gema",
     "category": "collectible",
     "primitive": "low_poly_gem",
     "editableFields": ["position", "scale", "color", "value"]

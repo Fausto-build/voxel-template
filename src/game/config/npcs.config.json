@@ -1,14 +1,14 @@
 {
   "wizard": {
-    "label": "Wizard",
+    "label": "Mago",
     "primitive": "low_poly_wizard",
-    "defaultDialogue": ["Hello, adventurer!"],
-    "editableFields": ["name", "position", "rotation", "dialogue", "missionId", "color"]
+    "defaultDialogue": ["¡Hola, aventurero!"],
+    "editableFields": ["name", "position", "rotation", "dialogue", "missionId", "color", "behavior", "pathId", "wanderRadius", "followDistance", "moveSpeed"]
   },
   "villager": {
-    "label": "Villager",
+    "label": "Aldeano",
     "primitive": "low_poly_villager",
-    "defaultDialogue": ["Nice to meet you!"],
-    "editableFields": ["name", "position", "rotation", "dialogue", "missionId", "color"]
+    "defaultDialogue": ["¡Un gusto conocerte!"],
+    "editableFields": ["name", "position", "rotation", "dialogue", "missionId", "color", "behavior", "pathId", "wanderRadius", "followDistance", "moveSpeed"]
   }
 }

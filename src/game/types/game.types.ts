@@ -8,6 +8,8 @@ import type {
 } from "./world.types";
 
 export type PlayerMode = "walking" | "driving";
+export type CharacterState = "idle" | "walking" | "running" | "jumping" | "falling" | "driving";
+export type CameraMode = "follow" | "vehicle_first_person" | "free";
 
 export type NearbyInteractable =
   | {
@@ -44,6 +46,17 @@ export type VehicleRuntimeState = {
   position: Vector3Tuple;
   rotationY: number;
   velocity: number;
+  steering: number;
+  wheelSpin: number;
+  exitRequested: boolean;
+};
+
+export type NPCRuntimeState = {
+  id: string;
+  position: Vector3Tuple;
+  rotationY: number;
+  pathIndex: number;
+  pathDirection: 1 | -1;
 };
 
 export type GameConfig = {
@@ -54,6 +67,9 @@ export type GameConfig = {
     runSpeed: number;
     jumpVelocity: number;
     interactionRadius: number;
+    acceleration?: number;
+    airControl?: number;
+    yawSmoothing?: number;
   };
   camera: {
     distance: number;
@@ -61,6 +77,25 @@ export type GameConfig = {
     smoothing: number;
     minPitch: number;
     maxPitch: number;
+    minDistance?: number;
+    maxDistance?: number;
+    zoomStep?: number;
+    freeCameraSpeed?: number;
+    vehicleFirstPersonHeight?: number;
+    vehicleFirstPersonForwardOffset?: number;
+    vehicleFirstPersonSmoothing?: number;
+  };
+  vehicle?: {
+    acceleration?: number;
+    brakePower?: number;
+    reverseSpeedRatio?: number;
+    steeringSmoothing?: number;
+    handbrakeDrift?: number;
+  };
+  npc?: {
+    moveSpeed?: number;
+    wanderRadius?: number;
+    followDistance?: number;
   };
 };
 
@@ -69,11 +104,15 @@ export type GameStoreState = {
   world: WorldConfig;
   missions: MissionConfig[];
   playerMode: PlayerMode;
+  playerState: CharacterState;
   currentVehicleId: string | null;
   playerPosition: Vector3Tuple;
   playerYaw: number;
+  cameraMode: CameraMode;
   cameraYaw: number;
   cameraPitch: number;
+  cameraDistance: number;
+  freeCameraPosition: Vector3Tuple;
   collectedIds: string[];
   activeMissionId: string | null;
   missionProgress: Record<string, number>;
@@ -84,6 +123,7 @@ export type GameStoreState = {
   completionMessage: string | null;
   paused: boolean;
   vehicleRuntime: Record<string, VehicleRuntimeState>;
+  npcRuntime: Record<string, NPCRuntimeState>;
 };
 
 export type GameStoreActions = {
@@ -92,7 +132,12 @@ export type GameStoreActions = {
   updateMissions: (missions: MissionConfig[]) => void;
   setPlayerPosition: (position: Vector3Tuple) => void;
   setPlayerYaw: (yaw: number) => void;
+  setPlayerState: (state: CharacterState) => void;
   rotateCamera: (deltaX: number, deltaY: number) => void;
+  setCameraDistance: (distance: number) => void;
+  toggleVehicleCameraMode: () => void;
+  toggleFreeCamera: () => void;
+  moveFreeCamera: (position: Vector3Tuple) => void;
   setNearbyInteractable: (interactable: NearbyInteractable | null) => void;
   collectCollectible: (collectible: CollectibleConfig) => void;
   startMission: (missionId: string) => void;
@@ -104,6 +149,7 @@ export type GameStoreActions = {
   enterVehicle: (vehicle: VehicleConfig) => void;
   exitVehicle: () => void;
   updateVehicleRuntime: (vehicleId: string, patch: Partial<VehicleRuntimeState>) => void;
+  updateNPCRuntime: (npcId: string, patch: Partial<NPCRuntimeState>) => void;
   clearCompletionMessage: () => void;
   togglePaused: () => void;
   setPaused: (paused: boolean) => void;

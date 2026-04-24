@@ -2,6 +2,12 @@
 
 This project is designed to be modified by AI agents.
 
+## Codex Skill
+
+This repo includes a project-local skill at `.agents/skills/rabbit-3d-adventure-template/SKILL.md`.
+
+Use the skill as the short workflow entry point, then use this guide as the detailed reference.
+
 ## Main Rule
 
 Edit config files first. Avoid changing core engine files unless necessary.
@@ -86,7 +92,20 @@ Vehicles need:
 - `turnSpeed`
 - `canDrive`
 
-Do not add advanced vehicle physics unless specifically requested.
+Optional handling fields include `acceleration`, `brakePower`, `reverseSpeed`, `steeringSmoothing`, `handbrakeDrift`, `wheelVisuals`, and `cameraMode`.
+
+Do not replace the lightweight kinematic vehicle controller with advanced vehicle physics unless specifically requested.
+
+## When Adding NPC Movement
+
+NPCs can optionally use `behavior` values:
+
+- `idle`
+- `wander`
+- `patrol`
+- `followPlayer`
+
+For `patrol`, add a matching path to the world file's `paths` array and set the NPC's `pathId`.
 
 ## AI World Editing API
 
@@ -101,6 +120,9 @@ Do not add advanced vehicle physics unless specifically requested.
 - `updateNPC`
 - `addVehicle`
 - `updateVehicle`
+- `addPath`
+- `updatePath`
+- `removePath`
 - `createMission`
 - `updateMission`
 - `changeTheme`

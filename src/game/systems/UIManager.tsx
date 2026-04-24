@@ -26,22 +26,22 @@ export function UIManager() {
   const progress = mission ? missionProgress[mission.id] ?? 0 : 0;
   const missionHint =
     missionState === "completed"
-      ? "Mission complete!"
+      ? "¡Misión completa!"
       : missionState === "ready_to_complete"
-        ? "Return to Wizard Milo."
+        ? "Vuelve con el Mago Milo y presiona E para entregarle las gemas."
         : activeMissionId
           ? mission?.description
-          : "Talk to Wizard Milo.";
+          : "Habla con el Mago Milo.";
 
   return (
     <div className="game-ui">
-      <section className="mission-panel" aria-label="Mission progress">
+      <section className="mission-panel" aria-label="Progreso de la misión">
         <div className="mission-panel__world">{worldName}</div>
-        <h1>{mission?.title ?? "Free Explore"}</h1>
+        <h1>{mission?.title ?? "Exploración libre"}</h1>
         <p>{missionHint}</p>
         {mission ? (
-          <div className="gem-meter" aria-label={`Gems ${progress} of ${targetCount}`}>
-            <span>Gems</span>
+          <div className="gem-meter" aria-label={`Gemas ${progress} de ${targetCount}`}>
+            <span>Gemas</span>
             <strong>
               {progress} / {targetCount}
             </strong>
@@ -49,10 +49,10 @@ export function UIManager() {
         ) : null}
       </section>
 
-      <section className="status-panel" aria-label="Collection status">
+      <section className="status-panel" aria-label="Estado de la colección">
         <span className="status-panel__dot" />
         <strong>{collectedIds.length}</strong>
-        <span>collected</span>
+        <span>recolectadas</span>
       </section>
 
       {nearbyInteractable && !dialogue ? (
@@ -63,13 +63,13 @@ export function UIManager() {
         <div className="dialogue-box">
           <div className="dialogue-box__speaker">{dialogue.speakerName}</div>
           <p>{dialogue.lines[dialogue.lineIndex]}</p>
-          <span>Press E</span>
+          <span>Presiona E</span>
         </div>
       ) : null}
 
       {completionMessage ? <div className="completion-toast">{completionMessage}</div> : null}
 
-      {paused ? <div className="pause-badge">Paused</div> : null}
+      {paused ? <div className="pause-badge">Pausa</div> : null}
     </div>
   );
 }

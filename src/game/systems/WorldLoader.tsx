@@ -5,7 +5,7 @@ import { NPCSystem } from "./NPCSystem";
 import { ObjectFactory } from "./ObjectFactory";
 import { VehicleSystem } from "./VehicleSystem";
 import { Sky } from "../components/Sky";
-import { Terrain } from "../components/Terrain";
+import { Terrain, terrainHasWater } from "../components/Terrain";
 import { Water } from "../components/Water";
 import type { WorldConfig } from "../types/world.types";
 import { getTheme } from "../utils/configLoader";
@@ -16,6 +16,7 @@ type WorldLoaderProps = {
 
 export function WorldLoader({ world }: WorldLoaderProps) {
   const theme = getTheme(world.theme);
+  const shadowExtent = Math.max(world.terrain.size[0], world.terrain.size[1]) * 0.7;
 
   return (
     <>
@@ -28,10 +29,17 @@ export function WorldLoader({ world }: WorldLoaderProps) {
         intensity={theme.lighting.sunIntensity}
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
+        shadow-camera-near={1}
+        shadow-camera-far={140}
+        shadow-camera-left={-shadowExtent}
+        shadow-camera-right={shadowExtent}
+        shadow-camera-top={shadowExtent}
+        shadow-camera-bottom={-shadowExtent}
+        shadow-bias={-0.0005}
       />
       <hemisphereLight args={[theme.skyColor, theme.groundColor, 0.42]} />
       <Terrain terrain={world.terrain} themeId={world.theme} />
-      <Water color={world.terrain.waterColor ?? theme.waterColor} />
+      {terrainHasWater(world.terrain) && <Water color={world.terrain.waterColor ?? theme.waterColor} />}
       <ObjectFactory objects={world.objects} />
       <CollectibleSystem collectibles={world.collectibles} />
       <NPCSystem npcs={world.npcs} />

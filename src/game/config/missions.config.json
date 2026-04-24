@@ -1,8 +1,8 @@
 [
   {
     "id": "collect_gems",
-    "title": "Find the Magic Gems",
-    "description": "Collect 5 magic gems and return to Wizard Milo.",
+    "title": "Encuentra las gemas mágicas",
+    "description": "Recolecta 5 gemas mágicas y vuelve con el Mago Milo.",
     "type": "collect",
     "target": {
       "collectibleType": "gem",
@@ -13,7 +13,7 @@
     },
     "reward": {
       "points": 100,
-      "message": "You saved the island!"
+      "message": "¡Salvaste la isla!"
     }
   }
 ]

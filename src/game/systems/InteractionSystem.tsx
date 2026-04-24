@@ -15,11 +15,12 @@ export function InteractionSystem() {
     const radius = gameConfig.player.interactionRadius ?? DEFAULT_INTERACTION_RADIUS;
 
     if (state.playerMode === "driving" && state.currentVehicleId) {
+      const runtime = state.vehicleRuntime[state.currentVehicleId];
       const interactable: NearbyInteractable = {
         kind: "exit_vehicle",
         id: state.currentVehicleId,
-        label: "Car",
-        prompt: "Press E to exit car",
+        label: "Auto",
+        prompt: runtime?.exitRequested ? "Frenando antes de salir..." : "Presiona E para salir del auto",
         distance: 0,
       };
 
@@ -32,7 +33,9 @@ export function InteractionSystem() {
     let nearest: NearbyInteractable | null = null;
 
     for (const npc of state.world.npcs) {
-      const distance = distance2D(state.playerPosition, npc.position);
+      const runtime = state.npcRuntime[npc.id];
+      const npcPosition = runtime?.position ?? npc.position;
+      const distance = distance2D(state.playerPosition, npcPosition);
 
       if (distance > radius) {
         continue;
@@ -41,8 +44,8 @@ export function InteractionSystem() {
       const missionState = npc.missionId ? state.missionStates[npc.missionId] : null;
       const prompt =
         missionState === "ready_to_complete"
-          ? `Press E to finish with ${npc.name}`
-          : `Press E to talk to ${npc.name}`;
+          ? `Presiona E para entregar las gemas a ${npc.name}`
+          : `Presiona E para hablar con ${npc.name}`;
 
       const candidate: NearbyInteractable = {
         kind: "npc",
@@ -74,7 +77,7 @@ export function InteractionSystem() {
         kind: "vehicle",
         id: vehicle.id,
         label: vehicle.label ?? vehicle.type,
-        prompt: "Press E to drive",
+        prompt: "Presiona E para conducir",
         distance,
       };
 

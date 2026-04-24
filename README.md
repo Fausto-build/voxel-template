@@ -38,9 +38,12 @@ Most of the game world is controlled from JSON files so AI agents can safely mod
 
 - WASD / Arrow Keys: move
 - Mouse: rotate camera
+- Mouse wheel: zoom camera
 - Space: jump
 - Shift: run
 - E: interact / drive / exit vehicle
+- V: switch vehicle camera
+- Shift + C: toggle free camera
 - Esc: pause
 
 ## Architecture

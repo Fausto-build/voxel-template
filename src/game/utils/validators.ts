@@ -7,6 +7,7 @@ import type {
   VehicleConfig,
   WorldConfig,
   WorldObjectConfig,
+  WorldPathConfig,
 } from "../types/world.types";
 
 export type ValidationResult = {
@@ -62,6 +63,22 @@ export function validateNPC(npc: NPCConfig, missions: MissionConfig[]): Validati
     errors.push(`NPC "${npc.id}" needs a numeric [x, y, z] position.`);
   }
 
+  if (npc.behavior && !["idle", "wander", "patrol", "followPlayer"].includes(npc.behavior)) {
+    errors.push(`NPC "${npc.id}" has unknown behavior "${npc.behavior}".`);
+  }
+
+  if (npc.wanderRadius !== undefined && !isPositiveNumber(npc.wanderRadius)) {
+    errors.push(`NPC "${npc.id}" needs a positive wanderRadius value.`);
+  }
+
+  if (npc.followDistance !== undefined && !isPositiveNumber(npc.followDistance)) {
+    errors.push(`NPC "${npc.id}" needs a positive followDistance value.`);
+  }
+
+  if (npc.moveSpeed !== undefined && !isPositiveNumber(npc.moveSpeed)) {
+    errors.push(`NPC "${npc.id}" needs a positive moveSpeed value.`);
+  }
+
   return { valid: errors.length === 0, errors };
 }
 
@@ -78,6 +95,78 @@ export function validateVehicle(vehicle: VehicleConfig): ValidationResult {
 
   if (typeof vehicle.speed !== "number" || typeof vehicle.turnSpeed !== "number") {
     errors.push(`Vehicle "${vehicle.id}" needs numeric speed and turnSpeed values.`);
+  }
+
+  for (const field of ["acceleration", "brakePower", "reverseSpeed", "steeringSmoothing"] as const) {
+    const value = vehicle[field];
+    if (value !== undefined && !isPositiveNumber(value)) {
+      errors.push(`Vehicle "${vehicle.id}" needs a positive ${field} value.`);
+    }
+  }
+
+  if (vehicle.handbrakeDrift !== undefined && !isNonNegativeNumber(vehicle.handbrakeDrift)) {
+    errors.push(`Vehicle "${vehicle.id}" needs a non-negative handbrakeDrift value.`);
+  }
+
+  if (vehicle.wheelVisuals !== undefined && typeof vehicle.wheelVisuals !== "boolean") {
+    errors.push(`Vehicle "${vehicle.id}" needs wheelVisuals to be true or false.`);
+  }
+
+  if (
+    vehicle.cameraMode !== undefined &&
+    vehicle.cameraMode !== "thirdPerson" &&
+    vehicle.cameraMode !== "firstPerson"
+  ) {
+    errors.push(`Vehicle "${vehicle.id}" has unknown cameraMode "${vehicle.cameraMode}".`);
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+function isPositiveNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
+function isNonNegativeNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+function validatePath(path: WorldPathConfig): ValidationResult {
+  const errors: string[] = [];
+
+  if (!path.id) {
+    errors.push("Every path needs an id.");
+  }
+
+  if (!Array.isArray(path.points) || path.points.length < 2) {
+    errors.push(`Path "${path.id}" needs at least two points.`);
+  } else {
+    path.points.forEach((point, index) => {
+      if (!isVector3Tuple(point)) {
+        errors.push(`Path "${path.id}" point ${index + 1} needs a numeric [x, y, z] position.`);
+      }
+    });
+  }
+
+  if (path.loop !== undefined && typeof path.loop !== "boolean") {
+    errors.push(`Path "${path.id}" needs loop to be true or false.`);
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+function validateNPCPathReferences(world: WorldConfig): ValidationResult {
+  const errors: string[] = [];
+  const paths = world.paths ?? [];
+
+  for (const npc of world.npcs) {
+    if (npc.behavior === "patrol" && !npc.pathId) {
+      errors.push(`NPC "${npc.id}" uses patrol behavior but has no pathId.`);
+    }
+
+    if (npc.pathId && !paths.some((path) => path.id === npc.pathId)) {
+      errors.push(`NPC "${npc.id}" links to missing path "${npc.pathId}".`);
+    }
   }
 
   return { valid: errors.length === 0, errors };
@@ -124,9 +213,12 @@ export function validateWorldConfig(world: WorldConfig, missions: MissionConfig[
 
   const results: ValidationResult[] = [
     hasDuplicateIds(allIds) ? fail("World contains duplicate IDs.") : ok(),
+    hasDuplicateIds(world.paths ?? []) ? fail("World contains duplicate path IDs.") : ok(),
     ...world.objects.map(validateObject),
     ...world.npcs.map((npc) => validateNPC(npc, missions)),
     ...world.vehicles.map(validateVehicle),
+    ...(world.paths ?? []).map(validatePath),
+    validateNPCPathReferences(world),
     validateMissionReferences(world, missions),
   ];
 

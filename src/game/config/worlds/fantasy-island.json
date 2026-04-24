@@ -1,6 +1,6 @@
 {
   "id": "fantasy-island",
-  "name": "Fantasy Island Adventure",
+  "name": "Aventura en la Isla Fantástica",
   "theme": "fantasy",
   "spawnPoint": {
     "position": [0, 1.5, 8],
@@ -14,6 +14,18 @@
     "sandColor": "#F4D58D",
     "waterColor": "#43B8E8"
   },
+  "paths": [
+    {
+      "id": "wizard_garden_loop",
+      "loop": true,
+      "points": [
+        [21, 0, -11],
+        [24, 0, -8],
+        [21, 0, -5],
+        [18, 0, -8]
+      ]
+    }
+  ],
   "objects": [
     {
       "id": "castle_01",
@@ -132,30 +144,40 @@
   "npcs": [
     {
       "id": "wizard_01",
-      "name": "Wizard Milo",
+      "name": "Mago Milo",
       "type": "wizard",
       "position": [21, 0, -11],
       "rotation": [0, -0.6, 0],
       "dialogue": [
-        "Welcome to Fantasy Island!",
-        "Please collect 5 magic gems and bring them back to me.",
-        "The island will sparkle again when the gems return."
+        "¡Bienvenido a la Isla Fantástica!",
+        "Por favor, recolecta 5 gemas mágicas y tráemelas.",
+        "La isla volverá a brillar cuando regresen las gemas."
       ],
-      "missionId": "collect_gems"
+      "missionId": "collect_gems",
+      "behavior": "patrol",
+      "pathId": "wizard_garden_loop",
+      "moveSpeed": 1.35
     }
   ],
   "vehicles": [
     {
       "id": "car_01",
       "type": "car",
-      "label": "Red Island Car",
+      "label": "Auto rojo de la isla",
       "position": [6, 0.25, 14],
       "rotation": [0, 0.25, 0],
       "scale": [1, 1, 1],
       "color": "#FF4D4D",
       "speed": 12,
       "turnSpeed": 2,
-      "canDrive": true
+      "canDrive": true,
+      "acceleration": 17,
+      "brakePower": 28,
+      "reverseSpeed": 5,
+      "steeringSmoothing": 13,
+      "handbrakeDrift": 0.5,
+      "wheelVisuals": true,
+      "cameraMode": "thirdPerson"
     }
   ]
 }

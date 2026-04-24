@@ -19,9 +19,9 @@ export function Water({ color }: WaterProps) {
   });
 
   return (
-    <mesh ref={meshRef} receiveShadow position={[0, WATER_LEVEL, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+    <mesh ref={meshRef} position={[0, WATER_LEVEL, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={1}>
       <circleGeometry args={[96, 96]} />
-      <meshStandardMaterial color={color} transparent opacity={0.54} roughness={0.25} />
+      <meshStandardMaterial color={color} transparent opacity={0.62} roughness={0.25} depthWrite={false} />
     </mesh>
   );
 }

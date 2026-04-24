@@ -1,11 +1,11 @@
 {
   "car": {
-    "label": "Car",
+    "label": "Auto",
     "primitive": "low_poly_car",
     "defaultSpeed": 12,
     "defaultTurnSpeed": 2,
     "canDrive": true,
-    "editableFields": ["position", "rotation", "scale", "color", "speed", "turnSpeed"]
+    "editableFields": ["position", "rotation", "scale", "color", "speed", "turnSpeed", "acceleration", "brakePower", "reverseSpeed", "steeringSmoothing", "handbrakeDrift", "wheelVisuals", "cameraMode"]
   },
   "kart": {
     "label": "Kart",
@@ -13,6 +13,6 @@
     "defaultSpeed": 15,
     "defaultTurnSpeed": 2.5,
     "canDrive": true,
-    "editableFields": ["position", "rotation", "scale", "color", "speed", "turnSpeed"]
+    "editableFields": ["position", "rotation", "scale", "color", "speed", "turnSpeed", "acceleration", "brakePower", "reverseSpeed", "steeringSmoothing", "handbrakeDrift", "wheelVisuals", "cameraMode"]
   }
 }

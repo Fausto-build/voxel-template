@@ -1,17 +1,39 @@
 {
-  "title": "Rabbit 3D Adventure Template",
+  "title": "Aventura 3D de Rabbit",
   "defaultWorldId": "fantasy-island",
   "player": {
     "walkSpeed": 6,
     "runSpeed": 10,
     "jumpVelocity": 9,
-    "interactionRadius": 4
+    "interactionRadius": 4,
+    "acceleration": 18,
+    "airControl": 6,
+    "yawSmoothing": 18
   },
   "camera": {
     "distance": 10,
     "height": 5,
     "smoothing": 0.12,
     "minPitch": -0.4,
-    "maxPitch": 0.75
+    "maxPitch": 0.75,
+    "minDistance": 5,
+    "maxDistance": 16,
+    "zoomStep": 0.01,
+    "freeCameraSpeed": 18,
+    "vehicleFirstPersonHeight": 1.45,
+    "vehicleFirstPersonForwardOffset": 1.15,
+    "vehicleFirstPersonSmoothing": 0.26
+  },
+  "vehicle": {
+    "acceleration": 18,
+    "brakePower": 26,
+    "reverseSpeedRatio": 0.45,
+    "steeringSmoothing": 14,
+    "handbrakeDrift": 0.42
+  },
+  "npc": {
+    "moveSpeed": 2.2,
+    "wanderRadius": 5,
+    "followDistance": 4
   }
 }

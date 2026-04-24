@@ -1,6 +1,8 @@
 export type Vector3Tuple = [number, number, number];
 export type RotationTuple = [number, number, number];
 export type ScaleTuple = [number, number, number];
+export type NPCBehavior = "idle" | "wander" | "patrol" | "followPlayer";
+export type VehicleCameraMode = "thirdPerson" | "firstPerson";
 
 export type SpawnPoint = {
   position: Vector3Tuple;
@@ -45,6 +47,11 @@ export type NPCConfig = {
   dialogue: string[];
   missionId?: string;
   color?: string;
+  behavior?: NPCBehavior;
+  pathId?: string;
+  wanderRadius?: number;
+  followDistance?: number;
+  moveSpeed?: number;
 };
 
 export type VehicleConfig = {
@@ -58,6 +65,19 @@ export type VehicleConfig = {
   speed: number;
   turnSpeed: number;
   canDrive: boolean;
+  acceleration?: number;
+  brakePower?: number;
+  reverseSpeed?: number;
+  steeringSmoothing?: number;
+  handbrakeDrift?: number;
+  wheelVisuals?: boolean;
+  cameraMode?: VehicleCameraMode;
+};
+
+export type WorldPathConfig = {
+  id: string;
+  points: Vector3Tuple[];
+  loop?: boolean;
 };
 
 export type WorldConfig = {
@@ -70,6 +90,7 @@ export type WorldConfig = {
   collectibles: CollectibleConfig[];
   npcs: NPCConfig[];
   vehicles: VehicleConfig[];
+  paths?: WorldPathConfig[];
 };
 
 export type ThemeConfig = {
